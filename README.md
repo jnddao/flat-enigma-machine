@@ -4,11 +4,11 @@ After seeing this machine at work in one of my security engineering courses, I d
 Turns out, its not that bad!  
 
 ## Table of contents
-<summary>Table of Contents</summary>
+<summary>Table of Contents</summary>  
 <ol>
     <li> <a href="#Getting-Started">Getting Started</a> </li>
     <li> <a href="#Usage">Usage</a> 
-
+</ol>
 ## Getting Started
 To run this app ensure that you
 - have python installed and that environment values have been set to allow you turn python from a command line  
@@ -31,5 +31,5 @@ python3 enigma.py
 
 and follow the prompts. 
 
-Ensure that all text requirements are met as error handling is not supported yet (the app has been very quickly put together).  
+Ensure that all text requirements are met as error handling is not supported yet (the app has been very quickly put together so please excuse the tardiness).  
 
