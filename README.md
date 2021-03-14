@@ -4,7 +4,6 @@ After seeing this machine at work in one of my security engineering courses, I d
 Turns out, its not that bad!  
 
 ## Table of contents
-<summary>Table of Contents</summary>  
 <ol>
     <li> <a href="#Getting-Started">Getting Started</a> </li>
     <li> <a href="#Usage">Usage</a> 
@@ -42,4 +41,4 @@ This repo has been distributed with the MIT Licence. See [Licence](./LICENCE) fo
   
   
 ## Contributing  
-Feel free to form the project and open a pull req if you want. I just made this for fun
+Feel free to form the project and open a pull request if you want. I just made this for fun
