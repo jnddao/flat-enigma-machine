@@ -1,4 +1,4 @@
-# flatEnigmaMachine
+# Flat Enigma Machine
 A python app based on Kevin's enigma machine found [here.](https://www.youtube.com/watch?v=UKbP3Rjxhy0) 
 After seeing this machine at work in one of my security engineering courses, I decided to see how hard it would be to code.  
 Turns out, its not that bad! 

@@ -1,16 +1,24 @@
 # gets inputs from user
 def getInputs():
-    # starting position
-    print("Please enter 3 letter starting position in ALL CAPS: ", end = '')
-    sPosition = input()
-    
-    # rotor order
-    print("Please enter rotorOrder (eg 123 with default reflector b): ", end = '')
-    rotorOrder = input()
+    sPosition, rotorOrder, code = "", 0, ""
+    done = False
+    while done == False :
+        # starting position
+        print("Please enter 3 letter starting position in ALL CAPS: ", end = '')
+        sPosition = input()
+        
+        # rotor order
+        print("Please enter rotorOrder (eg 123 with default reflector b): ", end = '')
+        rotorOrder = input()
 
-    # request coded msg
-    print("Please enter coded message IN ALL CAPS: ", end = '')
-    code = input().replace(" ", "")
+        # request coded msg
+        print("Please enter coded message in ALL CAPS: ", end = '')
+        code = input().replace(" ", "")
+
+        if rotorOrder.isnumeric and sPosition.isalpha() and sPosition.isupper() and code.isalpha() and code.isupper():
+            done = True
+        else:
+            print("Input Invalid. Try again\n\n")
 
     return sPosition, rotorOrder, code
 
