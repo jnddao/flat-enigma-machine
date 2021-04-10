@@ -2,7 +2,7 @@
 A python app based on Michael C. Koss's enigma machine found on Kevin's video [here.](https://www.youtube.com/watch?v=UKbP3Rjxhy0) 
 After seeing this machine at work in one of my security engineering courses, I decided to see how hard it would be to code.  
    
-**Note that this small script only supports words and not long sentences with punctuation!**
+**Note that this script will remove all punctuation input by the user. IT WILL NOT TRANSLATE PUNCTUATION AND ONLY A-Z CHARACTERS**
 
 ## Table of contents
 <ol>
@@ -20,7 +20,7 @@ To run this app ensure that you
 Thats it!
 
 ## Usage
-To run it simply do;  
+To run it simply run it with python in the command line;  
 
 ```
 python enigma.py
@@ -34,8 +34,7 @@ python3 enigma.py
 
 and follow the prompts. 
 
-Ensure that all text requirements are met as error handling is not supported yet (the app has been very quickly put together so please excuse the tardiness).  
-  
+Ensure that all text requirements when inputing string. 
 
 ## Licence  
 This repo has been distributed with the MIT Licence. See [Licence](https://github.com/jnddao/flat-enigma-machine/blob/main/LICENSE) for more information  

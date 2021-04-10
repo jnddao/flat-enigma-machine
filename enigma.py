@@ -5,19 +5,20 @@ def getInputs():
     done = False
     while done == False :
         # starting position
-        print("Please enter 3 letter starting position in ALL CAPS: ", end = '')
+        print("Please enter 3 letter starting position: ", end = '')
         sPosition = input()
-        
+        sPosition = sPosition.upper()
         # rotor order
         print("Please enter rotor order number from left to right (eg 123): ", end = '')
         rotorOrder = input()
 
         # request coded msg
-        print("Please enter coded message in ALL CAPS: ", end = '')
+        print("Please enter coded message in ALL CAPS (result will be capitalized and striped of all punctuation): ", end = '')
 
         # Removes spaces and punctuation
         code = code.translate(str.maketrans('', '', string.punctuation))
         code = input().replace(" ", "")
+        code = code.upper()
 
         # double check if input is correct
         if rotorOrder.isnumeric and sPosition.isalpha() and sPosition.isupper() and code.isalpha() and code.isupper() and len(sPosition) is 3:
