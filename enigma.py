@@ -5,7 +5,7 @@ def getInputs():
     done = False
     while done == False :
         # starting position
-        print("Please enter 3 letter starting position: ", end = '')
+        print("Please enter 3 letter starting position or cnt-c to exit: ", end = '')
         sPosition = input()
         sPosition = sPosition.upper()
         # rotor order
@@ -137,6 +137,7 @@ def main() :
     toggle3 = tempToggle[2]
 
     # enigma loop!
+    print('Final Output: ', end = '')
     for char in code:
         r3 += 1 # increment 3rd by 1
         rotor3, alphabet3 = rotate(rotor3, alphabet3, 1)
@@ -178,8 +179,9 @@ def main() :
         # printing
         print("%s" % alp[curr], end = '')
     # end of line
-    print ("")
+    print ("\n\n")
 
 
 if __name__ == "__main__":
-    main()
+    while(True):
+        main()
