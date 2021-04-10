@@ -1,3 +1,4 @@
+import string
 # gets inputs from user
 def getInputs():
     sPosition, rotorOrder, code = "", 0, ""
@@ -8,35 +9,35 @@ def getInputs():
         sPosition = input()
         
         # rotor order
-        print("Please enter rotorOrder (eg 123 with default reflector b): ", end = '')
+        print("Please enter rotor order number from left to right (eg 123): ", end = '')
         rotorOrder = input()
 
         # request coded msg
         print("Please enter coded message in ALL CAPS: ", end = '')
+
+        # Removes spaces and punctuation
+        code = code.translate(str.maketrans('', '', string.punctuation))
         code = input().replace(" ", "")
 
-        if rotorOrder.isnumeric and sPosition.isalpha() and sPosition.isupper() and code.isalpha() and code.isupper():
+        # double check if input is correct
+        if rotorOrder.isnumeric and sPosition.isalpha() and sPosition.isupper() and code.isalpha() and code.isupper() and len(sPosition) is 3:
             done = True
         else:
-            print("Input Invalid. Try again\n\n")
+            print("Input Invalid. Please check input and try again\n\n")
 
     return sPosition, rotorOrder, code
 
 # get's the next letter of a rotor given the next array being array
 # used for both alphabet and random cipher
-def getForward(rPointer, rLetter, array):
-    if (rPointer > 25) : 
-        rPointer = rPointer - 26
-
-    iNum = rPointer
-
-    for letter in array[rPointer:]:
+def getForward(rLetter, array):
+    counter = 0
+    for letter in array:
         if letter == rLetter:
             break
         else:
-            iNum += 1
+            counter += 1
     
-    return iNum
+    return counter
 
 # gets the reflector given the 'reflectee' 
 # reference is the given letter
@@ -50,21 +51,39 @@ def getRef(reference, ref, curr):
         else : 
             i += 1
 
+# Given a rotor and the number of times to be rotated, will rotate the rotor
+# Rotates by placing index 0 at the end of the array
+def rotate(rotor, alphabetRotor, number) :
+    counter = 0
+    # keeps rotating it until it it is rotated correct number of times
+    while counter < number:
+        # temp
+        firstIndex = rotor[0]
+        alphabetFirstIndex = alphabetRotor[0]
+        rotor.append(rotor.pop(rotor.index(firstIndex)))
+        alphabetRotor.append(alphabetRotor.pop(alphabetRotor.index(alphabetFirstIndex)))
+        counter += 1
 
-# yucky main function
+    return rotor, alphabetRotor
+
 # added one more repetition to rotors to help prevent end of array errors
 # only ment for short words and NOT sentences
 # removes spaces but does not support full stops
 def main() :
     # required rotors and references
-    rotor1String = "EKMFLGDQVZNTOWYHXUSPAIBRCJEKMFLGDQVZNTOWYHXUSPAIBRCJEKMFLGDQVZNTOWYHXUSPAIBRCJ"
-    rotor2String = "AJDKSIRUXBLHWTMCQGZNPYFVOEAJDKSIRUXBLHWTMCQGZNPYFVOEAJDKSIRUXBLHWTMCQGZNPYFVOE"
-    rotor3String = "BDFHJLCPRTXVZNYEIWGAKMUSQOBDFHJLCPRTXVZNYEIWGAKMUSQOBDFHJLCPRTXVZNYEIWGAKMUSQO"
+    rotor1String = "EKMFLGDQVZNTOWYHXUSPAIBRCJEKMFLGDQVZNTOWYHXUSPAIBRCJ"
+    rotor2String = "AJDKSIRUXBLHWTMCQGZNPYFVOEAJDKSIRUXBLHWTMCQGZNPYFVOE"
+    rotor3String = "BDFHJLCPRTXVZNYEIWGAKMUSQOBDFHJLCPRTXVZNYEIWGAKMUSQO"
     refString = "ABCDEFGDIJKGMKMIEBFTCVVJAT"
-    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    alphabetArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     # splitting to avoid long array declarations
-    alp = list(alphabet)
+
+    # alphabet section of array
+    alp = list(alphabetArray)
+    alphabet1 = list(alphabetArray)
+    alphabet2 = list(alphabetArray)
+    alphabet3 = list(alphabetArray)
     ref = list(refString)
     rotor1 = list(rotor1String)
     rotor2 = list(rotor2String)
@@ -75,6 +94,7 @@ def main() :
     toggle1 = [17, 43] 
     toggle2 = [5, 31] 
     toggle3 = [22, 48]
+    # temporary 2d array to assign toggles
     tempToggle = [[], [], []]
 
     # gets the first positions of the rotors 
@@ -86,6 +106,11 @@ def main() :
     r1 = ord(sPosition[0]) - 65
     r2 = ord(sPosition[1]) - 65
     r3 = ord(sPosition[2]) - 65
+
+    # rotating rotors to starting position
+    rotor1, alphabet1 = rotate(rotor1, alphabet1, r1)
+    rotor2, alphabet2 = rotate(rotor2, alphabet2, r2)
+    rotor3, alphabet3 = rotate(rotor3, alphabet3, r3)
 
     # loop to set rotor order
     counter = 0
@@ -113,12 +138,16 @@ def main() :
     # enigma loop!
     for char in code:
         r3 += 1 # increment 3rd by 1
-
+        rotor3, alphabet3 = rotate(rotor3, alphabet3, 1)
         # check if they all have to be incremented
-        if r3 in toggle3:r2 += 1
-        if r2 in toggle2:r1 += 1
+        if r3 in toggle3: 
+            rotor2, alphabet2 = rotate(rotor2, alphabet2, 1) 
+            r2 += 1
+        if r2 in toggle2: 
+            rotor1, alphabet1 = rotate(rotor1, alphabet1,  1)
+            r1 += 1
         if r1 in toggle1:
-            pass # wth happens here????
+            pass # nothing happens here as r1 is not affeliated with anything
         
         # check if any of the rs are over 51. Will set to 0 otherwise.
         # still need to do edge cases where rotor is at the end or key is greater than array reaches
@@ -130,29 +159,23 @@ def main() :
         # number to keep track of position
         # getFoward is position of alp
         # first half of encryption
-        curr = (ord(char) - 65) + r3 # get the initial position
+        curr = (ord(char) - 65) # get the initial position
 
-        curr = getForward(r3, rotor3[curr], alp)
-        curr = r2 + curr - r3
-        curr = getForward(r2, rotor2[curr], alp)
-        curr = r1 + curr - r2
-        curr = getForward(r1, rotor1[curr], alp)
+        curr = getForward(rotor3[curr], alphabet3)
+        curr = getForward(rotor2[curr], alphabet2)
+        curr = getForward(rotor1[curr], alphabet1)
 
         # getting reflection and starting again
-        reference = ref[curr - r1]
-        curr = getRef(reference, ref, curr - r1)
-   
+        referenceLetter = ref[curr]
+        curr = getRef(referenceLetter, ref, curr)
         # second half of encryption
         # gerForward is location of rotor
-        curr = curr + r1
-        curr = getForward(r1, alp[curr], rotor1)
-        curr = r2 + curr - r1
-        curr = getForward(r2, alp[curr], rotor2)
-        curr = r3 + curr - r2
-        curr = getForward(r3, alp[curr], rotor3)
+        curr = getForward(alphabet1[curr], rotor1)
+        curr = getForward(alphabet2[curr], rotor2)
+        curr = getForward(alphabet3[curr], rotor3)
 
         # printing
-        print("%s" % alp[curr - r3], end = '')
+        print("%s" % alp[curr], end = '')
     # end of line
     print ("")
 
